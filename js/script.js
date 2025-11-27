@@ -1,4 +1,4 @@
-let offset = 10; // ya hemos mostrado los 10 primeros con PHP
+let offset = 10;
 const limit = 10;
 const grid = document.getElementById("pokemonGrid");
 const status = document.getElementById("status");
