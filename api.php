@@ -5,29 +5,45 @@ header('Content-Type: application/json; charset=utf-8');
 $json = file_get_contents('pokemon.json');
 $data = json_decode($json, true);
 
-// Si no hay parámetros, devolver todo
-if (!isset($_GET['name'])) {
-    echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+if ($json === false || $data === null) {
+    echo json_encode(["error" => "No se pudo leer o decodificar el JSON"]);
     exit;
 }
 
-// Buscar por nombre
-$name = strtolower($_GET['name']);
-$resultado = null;
+$pokemon = $data['pokemon'];
 
-foreach ($data['pokemon'] as $poke) {
-    if (strtolower($poke['nombre']) === $name) {
-        $resultado = $poke;
-        break;
+// --- Buscar por nombre ---
+if (isset($_GET['name'])) {
+    $name = strtolower($_GET['name']);
+    $resultado = null;
+
+    foreach ($pokemon as $poke) {
+        if (strtolower($poke['nombre']) === $name) {
+            $resultado = $poke;
+            break;
+        }
     }
+
+    if ($resultado) {
+        echo json_encode($resultado, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    } else {
+        echo json_encode([
+            "error" => "Pokémon no encontrado",
+            "buscado" => $name
+        ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    }
+    exit;
 }
 
-// Devolver resultado o error si no se encuentra
-if ($resultado) {
-    echo json_encode($resultado, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-} else {
-    echo json_encode([
-        "error" => "Pokémon no encontrado",
-        "buscado" => $name
-    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-}
+// --- Paginación si no hay name ---
+$offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
+$limit  = isset($_GET['limit']) ? intval($_GET['limit']) : count($pokemon);
+
+$subset = array_slice($pokemon, $offset, $limit);
+
+echo json_encode([
+    "count" => count($pokemon),
+    "offset" => $offset,
+    "limit" => $limit,
+    "results" => $subset
+], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
