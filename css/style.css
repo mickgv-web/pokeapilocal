@@ -1,18 +1,18 @@
 /* Fuente y fondo general */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #fceabb, #f8b500);
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* degradado azul oscuro */
   margin: 0;
   padding: 20px;
-  color: #222;
+  color: #eee;
 }
 
 /* Título principal */
 h1 {
   text-align: center;
   font-size: 2.5rem;
-  color: #e3350d;
-  text-shadow: 2px 2px #fff;
+  color: #ffcb05; /* amarillo Pokémon */
+  text-shadow: 2px 2px #000;
   margin-bottom: 30px;
 }
 
@@ -25,10 +25,10 @@ h1 {
 
 /* Card de cada Pokémon */
 .card {
-  background: #fff;
+  background: #1e1e2f;
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
@@ -36,15 +36,15 @@ h1 {
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
 }
 
 /* Nombre del Pokémon */
 .card h3 {
   margin: 0 0 10px;
   font-size: 1.2rem;
-  color: #0a1f44;
-  border-bottom: 2px solid #eee;
+  color: #ffcb05;
+  border-bottom: 2px solid #333;
   padding-bottom: 6px;
 }
 
@@ -52,6 +52,7 @@ h1 {
 .card p {
   margin: 6px 0;
   font-size: 0.95rem;
+  color: #ddd;
 }
 
 /* Badges de tipo */
@@ -65,7 +66,7 @@ h1 {
   margin-right: 6px;
 }
 
-/* Colores por tipo */
+/* Colores por tipo (en español) */
 .badge.planta { background: #78c850; }
 .badge.veneno { background: #a040a0; }
 .badge.fuego { background: #f08030; }
@@ -82,5 +83,5 @@ h1 {
   text-align: center;
   margin-top: 20px;
   font-weight: bold;
-  color: #333;
+  color: #ffcb05;
 }
