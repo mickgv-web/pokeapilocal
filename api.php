@@ -12,7 +12,6 @@ if ($json === false || $data === null) {
 
 $pokemon = $data['pokemon'];
 
-// --- Buscar por nombre ---
 if (isset($_GET['name'])) {
     $name = strtolower($_GET['name']);
     $resultado = null;
@@ -35,7 +34,6 @@ if (isset($_GET['name'])) {
     exit;
 }
 
-// --- Paginación si no hay name ---
 $offset = isset($_GET['offset']) ? intval($_GET['offset']) : 0;
 $limit  = isset($_GET['limit']) ? intval($_GET['limit']) : count($pokemon);
 

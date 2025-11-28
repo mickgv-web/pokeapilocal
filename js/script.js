@@ -1,17 +1,23 @@
-let offset = 10;
+let offset = 10; // ya hemos mostrado los 10 primeros con PHP
 const limit = 10;
 const grid = document.getElementById("pokemonGrid");
 const status = document.getElementById("status");
 let loading = false;
+let totalPokemons = null;
 
 function loadMore() {
   if (loading) return;
   loading = true;
+  status.textContent = "Cargando…";
 
-  fetch("pokemon.json")
+  fetch(`api.php?offset=${offset}&limit=${limit}`)
     .then((res) => res.json())
     .then((data) => {
-      const pokemons = data.pokemon.slice(offset, offset + limit);
+      if (totalPokemons === null) {
+        totalPokemons = data.count;
+      }
+
+      const pokemons = data.results;
       offset += limit;
 
       pokemons.forEach((poke) => {
@@ -30,9 +36,11 @@ function loadMore() {
         grid.appendChild(card);
       });
 
-      if (offset >= data.pokemon.length) {
+      if (offset >= totalPokemons) {
         status.textContent = "No hay más Pokémon";
         window.removeEventListener("scroll", handleScroll);
+      } else {
+        status.textContent = "";
       }
 
       loading = false;
@@ -45,15 +53,18 @@ function loadMore() {
 }
 
 function handleScroll() {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 400) {
     loadMore();
   }
 }
 
-// Escuchar el scroll
 window.addEventListener("scroll", handleScroll);
+
 function ensureScroll() {
-  if (document.body.offsetHeight <= window.innerHeight) {
+  if (
+    document.body.offsetHeight <= window.innerHeight &&
+    (totalPokemons === null || offset < totalPokemons)
+  ) {
     loadMore();
     setTimeout(ensureScroll, 200);
   }
